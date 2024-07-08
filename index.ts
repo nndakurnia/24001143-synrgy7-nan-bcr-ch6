@@ -1,7 +1,9 @@
 import express, { Express } from "express";
 import knex from "knex";
 import { Model } from "objection";
+import swaggerUi from "swagger-ui-express";
 import router from "./src/routes";
+import * as swaggerDocument from "./swaggerConfig.json"
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -31,6 +33,8 @@ const knexInstance = knex({
 });
 
 Model.knex(knexInstance);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api", router);
 

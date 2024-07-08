@@ -1,0 +1,1053 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API Binar Car Rental",
+    "version": "1.0.0",
+    "description": "Challenge Chapter 6"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login for all user (member, admin, superadmin)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "types": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid email or password!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register for member",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "types": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User registered successfully!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email already exists!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/register": {
+      "post": {
+        "summary": "Register for member",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "types": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Admin successfully added!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email already exists!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "summary": "Get the current user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "admin1"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "admin1@gmail.com"
+                        },
+                        "password": {
+                          "type": "string",
+                          "example": "$2a$10$U.pFptQD9jZNkcqdY49hluCl3aLoEl3Tp12qDcShr1C.K1KYBXl6m"
+                        },
+                        "user_role": {
+                          "type": "string",
+                          "example": "admin"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2024-07-06T16:22:01.543Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/cars": {
+      "get": {
+        "summary": "Show available cars for all user",
+        "responses": {
+          "200": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "plate": {
+                            "type": "string",
+                            "example": "DBH-3491"
+                          },
+                          "...": {
+                            "type": "..."
+                          }
+                        }
+                      },
+                      "example": [
+                        {
+                          "id": 1,
+                          "plate": "DBH-3491",
+                          "...": "..."
+                        },
+                        {
+                          "id": 2,
+                          "plate": "WXB-3984",
+                          "...": "..."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No available car data!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/cars": {
+      "get": {
+        "summary": "CRUD: show cars data for admin",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "plate": {
+                          "type": "string",
+                          "example": "DBH-3491"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "ord F150"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dpif60wfq/image/upload/v1717424041/kkxlm74oszbvxn3fthcv.jpg"
+                        },
+                        "rent_cost": {
+                          "type": "number",
+                          "example": 200000
+                        },
+                        "capacity": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": " Brake assist. Leather-wrapped shift knob. Glove box lamp. Air conditioning w/in-cabin microfilter."
+                        },
+                        "transmission": {
+                          "type": "string",
+                          "example": "Automatic"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "Sedan"
+                        },
+                        "year": {
+                          "type": "number",
+                          "example": 2022
+                        },
+                        "available_at": {
+                          "type": "string",
+                          "example": "2024-07-20T15:49:05.563Z"
+                        },
+                        "is_available": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2024-07-06T02:51:35.680Z"
+                        },
+                        "created_by": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2024-07-06T02:51:35.680Z"
+                        },
+                        "updated_by": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "deleted_at": {
+                          "type": "string",
+                          "example": null
+                        },
+                        "deleted_by": {
+                          "type": "number",
+                          "example": null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No car data!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "CRUD: create cars data by admin",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "types": "object",
+                "properties": {
+                  "plate": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "rent_cost": {
+                    "type": "number"
+                  },
+                  "capacity": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "transmission": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "year": {
+                    "type": "number"
+                  },
+                  "available_at": {
+                    "type": "date"
+                  },
+                  "is_available": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Car added successfully!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "plate": {
+                          "type": "string",
+                          "example": "DBH-3491"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "ord F150"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dpif60wfq/image/upload/v1717424041/kkxlm74oszbvxn3fthcv.jpg"
+                        },
+                        "rent_cost": {
+                          "type": "number",
+                          "example": 200000
+                        },
+                        "capacity": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": " Brake assist. Leather-wrapped shift knob. Glove box lamp. Air conditioning w/in-cabin microfilter."
+                        },
+                        "transmission": {
+                          "type": "string",
+                          "example": "Automatic"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "Sedan"
+                        },
+                        "year": {
+                          "type": "number",
+                          "example": 2022
+                        },
+                        "available_at": {
+                          "type": "string",
+                          "example": "2024-07-20T15:49:05.563Z"
+                        },
+                        "is_available": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2024-07-06T02:51:35.680Z"
+                        },
+                        "created_by": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2024-07-06T02:51:35.680Z"
+                        },
+                        "updated_by": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "deleted_at": {
+                          "type": "string",
+                          "example": null
+                        },
+                        "deleted_by": {
+                          "type": "number",
+                          "example": null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to create car!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/cars/available": {
+      "get": {
+        "summary": "CRUD: show car detail by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "plate": {
+                            "type": "string",
+                            "example": "DBH-3491"
+                          },
+                          "...": {
+                            "type": "..."
+                          }
+                        }
+                      },
+                      "example": [
+                        {
+                          "id": 1,
+                          "plate": "DBH-3491",
+                          "...": "..."
+                        },
+                        {
+                          "id": 2,
+                          "plate": "WXB-3984",
+                          "...": "..."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No available car data!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/cars/{id}": {
+      "get": {
+        "summary": "Show car detail by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "plate": {
+                          "type": "string",
+                          "example": "DBH-3491"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "ord F150"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dpif60wfq/image/upload/v1717424041/kkxlm74oszbvxn3fthcv.jpg"
+                        },
+                        "rent_cost": {
+                          "type": "number",
+                          "example": 200000
+                        },
+                        "capacity": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": " Brake assist. Leather-wrapped shift knob. Glove box lamp. Air conditioning w/in-cabin microfilter."
+                        },
+                        "transmission": {
+                          "type": "string",
+                          "example": "Automatic"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "Sedan"
+                        },
+                        "year": {
+                          "type": "number",
+                          "example": 2022
+                        },
+                        "available_at": {
+                          "type": "string",
+                          "example": "2024-07-20T15:49:05.563Z"
+                        },
+                        "is_available": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2024-07-06T02:51:35.680Z"
+                        },
+                        "created_by": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2024-07-06T02:51:35.680Z"
+                        },
+                        "updated_by": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "deleted_at": {
+                          "type": "string",
+                          "example": null
+                        },
+                        "deleted_by": {
+                          "type": "number",
+                          "example": null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Car not found!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "CRUD: update car data by admin",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "types": "object",
+                "properties": {
+                  "plate": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "rent_cost": {
+                    "type": "number"
+                  },
+                  "capacity": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "transmission": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "year": {
+                    "type": "number"
+                  },
+                  "is_available": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Car updated successfully!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "plate": {
+                          "type": "string",
+                          "example": "DBH-3491"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "ord F150"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dpif60wfq/image/upload/v1717424041/kkxlm74oszbvxn3fthcv.jpg"
+                        },
+                        "rent_cost": {
+                          "type": "number",
+                          "example": 200000
+                        },
+                        "capacity": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": " Brake assist. Leather-wrapped shift knob. Glove box lamp. Air conditioning w/in-cabin microfilter."
+                        },
+                        "transmission": {
+                          "type": "string",
+                          "example": "Automatic"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "Sedan"
+                        },
+                        "year": {
+                          "type": "number",
+                          "example": 2022
+                        },
+                        "available_at": {
+                          "type": "string",
+                          "example": "2024-07-20T15:49:05.563Z"
+                        },
+                        "is_available": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2024-07-06T02:51:35.680Z"
+                        },
+                        "created_by": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2024-07-06T02:51:35.680Z"
+                        },
+                        "updated_by": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "deleted_at": {
+                          "type": "string",
+                          "example": null
+                        },
+                        "deleted_by": {
+                          "type": "number",
+                          "example": null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to update car!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "CRUD: delete car by admin",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "When API Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Car deleted successfully!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "types": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Car not found!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
